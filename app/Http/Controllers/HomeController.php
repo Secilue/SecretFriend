@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Notifications\SMSNotification;
 use App\Models\Game;
 use App\Models\Participant;
+use App\User;
 use Log;
 use Auth;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -17,7 +20,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -42,7 +45,7 @@ class HomeController extends Controller
             'from' => $request['from'],
             'give_to' => $request['give_to'],
         ];
-        //$team = collect($data_participants)->except('name', 'cellphoneNumber','give_to','from')->toArray();
+        // $team = collect($data_participants)->except('name', 'cellphoneNumber','give_to','from')->toArray();
         $game = new Game();
         $game->password = bcrypt($request['password']); // Encrypt password.
         $game->user_id = $userId;
@@ -71,6 +74,10 @@ class HomeController extends Controller
             $l[$key] = $temp;
             $game->gameParticipants()->attach($l);
         }
+        // Message.
+        /* $user = new User();
+        $user->phone_number= '526642626127';   // Don't forget specify country code.
+        $user->notify(new SMSNotification());*/ 
         return response()->json([
             'state' => 'created',
             'game_id' => $game->id,

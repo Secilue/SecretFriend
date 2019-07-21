@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">New Exchange</div>
+                <div class="card-header text-center">New Exchange</div>
                 <div class="card-body">
                 {!! Form::open(['url', 'method' => 'post', 'files'=> true, 'id'=>'form']) !!}
                     @if (session('status'))
@@ -13,6 +13,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control" id="game_title" name="game_title" type="text" placeholder="Game Title">
+                        </div>
+                    </div>
                     <div id="field_wrapper" class="form-group required">
                     </div>
                     <div class="form-group">
@@ -56,8 +61,8 @@
         var addButton = $('.add_button');
         var wrapper = $('#field_wrapper');
         var x = 1;
-        for (x; x <= minField; x++) { /* Create minimum participants. */
-            $(wrapper).append('<div class="table-bordered p-2" style="background-color: rgb(237, 247, 250);"><div class="col-md-6 d-inline-block"><label class="control-label required">Name:</label><input class="form-control" type="text" name="name[]" id="name'+ x +'" placeholder="Participant name" required="required"></div><div class="col-md-6 d-inline-block"><label class="control-label">Cellphone number:</label><input class="form-control" type="number" name="cellphoneNumber[]" id="cellphoneNumber'+ x +'" placeholder="Cellphone number" required="required"></div></div>');
+        for (x; x <= minField; x++) { /* Creating minimum participants. */
+            $(wrapper).append('<div class="table-bordered p-2" style="background-color: rgb(237, 247, 250);"><div class="col-md-6 d-inline-block"><label class="control-label required">Name:</label><input class="form-control" type="text" name="name[]" id="name'+ x +'" placeholder="Participant name" required="required"></div><div class="col-md-6 d-inline-block"><label class="control-label">Cellphone number:</label><input class="form-control" type="number" name="cellphoneNumber[]" id="cellphoneNumber'+ x +'" placeholder="E.g. 526641234567" required="required"></div></div>');
         }
         $(wrapper).on('click', '.remove_participant', function(e){
             e.preventDefault();
@@ -67,7 +72,7 @@
         $('#addParticipant').on('click', function(e) {
             e.preventDefault();
             if (x <= maxField) {
-                $(wrapper).append('<div class="table-bordered p-2" style="background-color: rgb(237, 247, 250);"><div class="col-md-6 d-inline-block"><label class="control-label">Name:</label><input class="form-control" type="text" name="name[]" id="name'+ x +'" placeholder="Participant name" required="required"></div><div class="col-md-5 d-inline-block">Cellphone number:<input class="form-control" type="number" name="cellphoneNumber[]" id="cellphoneNumber'+ x +'" placeholder="Cellphone number"></div><a href="javascript:void(0);" class="col-md-1 d-inline-block remove_participant" title="Eliminar"><i class="fa fa-fw fa-trash fa-lg text-danger"></i></a></div>');
+                $(wrapper).append('<div class="table-bordered p-2" style="background-color: rgb(237, 247, 250);"><div class="col-md-6 d-inline-block"><label class="control-label">Name:</label><input class="form-control" type="text" name="name[]" id="name'+ x +'" placeholder="Participant name" required="required"></div><div class="col-md-5 d-inline-block">Cellphone number:<input class="form-control" type="number" name="cellphoneNumber[]" id="cellphoneNumber'+ x +'" placeholder="E.g. 526641234567"></div><a href="javascript:void(0);" class="col-md-1 d-inline-block remove_participant" title="Eliminar"><i class="fa fa-fw fa-trash fa-lg text-danger"></i></a></div>');
                 x++;
             }
         });
@@ -111,7 +116,7 @@
                 success: function(data, textStatus, xhr) {
                     $('#pleaseWaitDialog').modal('hide');
                     if( xhr.status === 200 ) {
-                        location.href = 'http://localhost:8080/SecretFriend/public/home/games'; 
+                        window.location = 'http://localhost:8080/SecretFriend/public/home/games'; 
                     }
                 }
             });

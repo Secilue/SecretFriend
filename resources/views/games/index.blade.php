@@ -12,9 +12,15 @@
                     @foreach($games as $index => $game)
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="{{ '#collapse'.$game->id }}">{{ 'Game No#'.$game->id.'. '.$game->qty_participants.' participants.' }}</a>
-                            </h4>
+                            <h5 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="{{ '#collapse'.$game->id }}">
+                            @if($game->title == "Game No#" || $game->title == null)
+                                {{ 'Game No#'.$game->id.' ('.$game->qty_participants.' participants)' }}
+                            @else
+                                {{ $game->title.' ('.$game->qty_participants.' participants)' }}
+                            @endif
+                            </a>
+                            </h5>
                         </div>
                         <div id="{{ 'collapse'.$game->id }}" class="panel-collapse collapse in">
                             <div class="panel-body">

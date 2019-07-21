@@ -50,6 +50,7 @@ class HomeController extends Controller
         $game->password = bcrypt($request['password']); // Encrypt password.
         $game->user_id = $userId;
         $game->qty_participants = $request['qty_participants'];
+        $game->title = ($request['game_title'] == null) ? 'Game No#' : $request['game_title'];
         $game->save();
         $list = [];
         // Save each participant in Database.

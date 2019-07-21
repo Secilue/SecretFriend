@@ -18,3 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/home', 'HomeController@store');
+Route::get('/home/games', 'GameController@index');
+Route::put('/home/games/{id}', 'GameController@update');

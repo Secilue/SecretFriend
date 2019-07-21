@@ -24,9 +24,10 @@ class GameController extends Controller
         if (Hash::check($request['password'], $game->password)) {
             $game->locked = 0;
             $game->save();
+            $game->gameParticipants;
             return response()->json([
                 'state' => 'updated',
-                'game_id' => $game->id,
+                'game' => $game,
             ], 200);
         } else {
             return response()->json([

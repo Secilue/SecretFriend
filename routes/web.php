@@ -20,4 +20,4 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home', 'HomeController@store');
 Route::get('/home/games', 'GameController@index');
-Route::put('/home/games/{id}', 'GameController@update');
+Route::put('/home/{game}/games', 'GameController@update');

@@ -13,20 +13,20 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                            <a data-toggle="collapse" id="{{ $game->id }}" data-parent="#accordion" href="{{ '#collapse'.$game->id }}">{{ 'Game No#'.$game->id.'. '.$game->qty_participants.' participants.' }}</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="{{ '#collapse'.$game->id }}">{{ 'Game No#'.$game->id.'. '.$game->qty_participants.' participants.' }}</a>
                             </h4>
                         </div>
                         <div id="{{ 'collapse'.$game->id }}" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table id="game_data" class="table table-striped table-bordered table-hover text-center">
+                                    <table id="{{ 'game_data'.$game->id }}" class="table table-striped table-bordered table-hover text-center">
                                         <thead>
                                             <tr>
                                                 <th>From</th>
                                                 <th>To</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="{{ $game->id }}">
                                             @foreach($game->gameParticipants as $key => $participant)
                                                 <tr>
                                                     <td>{{ $participant->name }}</td>
@@ -163,7 +163,7 @@
             $('#pleaseWaitDialog').modal('show'); 
             var password = $('#password').val();
             $.ajax({
-                url: 'games/' + actual_id,
+                url: actual_id + '/games',
                 type: 'PUT',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -172,7 +172,22 @@
                 success: function(data, textStatus, xhr) {
                     $('#pleaseWaitDialog').modal('hide');
                     if( xhr.status === 200 ) {
-                        location.reload(); 
+                        data = data.game; 
+                        $('#' + actual_id).empty();
+                        for (var i = 0; i < data.game_participants.length; i++) {
+                            var give_to = data.game_participants[i].pivot.give_to;
+                            var from_name = data.game_participants[i].name;
+                            for (var p = 0; p < data.game_participants.length; p++) {
+                                var give_to_id = data.game_participants[p].id;
+                                if ( give_to == give_to_id) {
+                                    var to_name = data.game_participants[p].name;
+                                    var table_id = $('#game_data' + actual_id).val();
+                                    $('#' + actual_id).append('<tr><td>'+ from_name +'</td><td>'+ to_name +'</td></tr>');
+                                }
+                            }
+                        }
+                        $('.unlock').addClass( "d-none" );
+                        // location.reload(); 
                     } else if ( xhr.status === 201 ) {
                         $('#errorPassword').modal('show');
                     }
